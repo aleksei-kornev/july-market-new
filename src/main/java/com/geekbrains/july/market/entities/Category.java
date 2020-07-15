@@ -5,11 +5,12 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+//коммент для коммита
 @Entity
-@Table(name = "products")
+@Table(name = "categories")
 @Data
 @NoArgsConstructor
-public class Product {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -18,16 +19,12 @@ public class Product {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "price")
-    private int price;
+    @Column(name = "description")
+    private String description;
 
-    @Column(name = "id_categories")
-    private int id_categories;
-
-    public Product(Long id, String title, int price, int id_categories) {
+    public Category(Long id, String title, String description) {
         this.id = id;
         this.title = title;
-        this.price = price;
-        this.id_categories = id_categories;
+        this.description = description;
     }
 }
