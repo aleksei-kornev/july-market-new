@@ -2,10 +2,13 @@ package com.geekbrains.july.market.controllers;
 
 import com.geekbrains.july.market.entities.Category;
 import com.geekbrains.july.market.entities.Product;
+import com.geekbrains.july.market.models.Basket;
 import com.geekbrains.july.market.services.CategoriesService;
 import com.geekbrains.july.market.services.ProductsService;
 import com.geekbrains.july.market.utils.ProductFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +22,11 @@ import java.util.Map;
 public class ProductsController {
     private ProductsService productsService;
     private CategoriesService categoriesService;
+    ApplicationContext context =
+            new AnnotationConfigApplicationContext("com.geekbrains.july.market.models");
+    Basket basket = context.getBean(Basket.class);
+
+
 
     @Autowired
     public ProductsController(ProductsService productsService, CategoriesService categoriesService) {
@@ -50,6 +58,12 @@ public class ProductsController {
     public String saveNewProduct(@ModelAttribute Product product) {
         productsService.saveOrUpdate(product);
         return "redirect:/products/";
+    }
+
+    @GetMapping("/buy/{id}")
+    public String buyNewProduct(@PathVariable Long id, Model model) {
+        basket.addProduct(productsService.findById(id));
+        return "redirect:/basket/";
     }
 
     @GetMapping("/edit/{id}")
